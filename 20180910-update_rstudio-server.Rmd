@@ -1,0 +1,37 @@
+---
+title: "Update RStudio Server"
+author: "Lucio Rezende Queiroz"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+
+# Update R studio server (preview) on Debian 9
+
+First of all you need root or super user access 
+
+* Check the latest preview version at [RStudio Server Preview](https://www.rstudio.com/products/rstudio/download/preview/).
+* Check latest stable version at [RStudio Server Stable](https://www.rstudio.com/products/rstudio/download/)
+
+## Update / install debian installer 
+
+```bash
+sudo apt-get update
+sudo apt-get install gdebi-core
+```
+
+## Download package
+
+* Change <VERSION> for the latest stable or preview version
+
+```bash
+wget https://s3.amazonaws.com/rstudio-ide-build/desktop/debian9/x86_64/rstudio-server-<VERSION>-amd64.deb
+# https://s3.amazonaws.com/rstudio-ide-build/server/debian9/x86_64/rstudio-server-1.2.907-amd64.deb
+```
+
+## Run the installer
+
+```bash
+sudo gdebi rstudio-server-<VERSION>-amd64.deb
+```
+
+

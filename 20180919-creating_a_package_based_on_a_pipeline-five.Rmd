@@ -1,0 +1,123 @@
+---
+title: "F.I.V.E. -- Developing a framework using a package structure"
+author: "Lucio Rezende Queiroz"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+
+# five
+
+```{r setup}
+knitr::opts_knit$set(root.dir = '~/projects/five/' )
+#knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6)
+```
+
+# Setting options
+
+```{r, eval=FALSE}
+getOption("devtools")
+getOption("devtools.path")
+getOption("devtools.name")
+getOption("devtools.desc.author")
+getOption("devtools.desc.license")
+
+options(
+  devtools.name = "Lucio Rezende Queiroz",
+  devtools.desc.author = 
+    'person(
+      "Lucio", "Rezende Queiroz",
+      email = "luciorqueiroz@gmail.com",
+      role = c("aut", "cre"),
+      comment = c(ORCID="0000-0002-6090-1834")
+    )'
+  )
+
+options(
+  usethis.name = "Lucio Rezende Queiroz",
+  usethis.full_name = "Lucio Rezende Queiroz",
+  usethis.description = list(
+      `Authors@R` = 'person(
+                      "Lucio", "Rezende Queiroz", 
+                      email = "luciorqueiroz@gmail.com",
+                      role = c("aut", "cre"),
+                      comment = c(ORCID="0000-0002-6090-1834")
+                    )',
+    License = "MIT + file LICENSE",
+    Version = "0.1.0"
+  )
+)
+getOption("usethis.description")
+```
+
+# creating package
+
+```{r, eval=FALSE}
+usethis::create_package(here::here("projects","five"))
+```
+# Change project build information
+
+Menu: Build > Configure Build Tools > check:
+* Generate Documentation with roxygen and all suboptions in `configure`
+
+Add check parameter `--as-cran` (Check Parameter - R CMD check)
+
+# Setting dependencies
+
+```{r}
+cran_packages_to_use <- c(
+  "dplyr",
+  "ggplot2",
+  "readr",
+  "reshape",
+  "plyr",
+  "gplots",
+  "scales",
+  "RColorBrewer",
+  "stringr",
+  "fs",
+  "here",
+  "ggrepel",
+  "optparse"
+)
+## Bioconductor packages
+bioc_packages_to_use <- c()
+packages_to_use <- c(cran_packages_to_use, bioc_packages_to_use)
+## Add to description file Imports field
+output <- purrr::map(
+  packages_to_use,
+  usethis::use_package
+)
+```
+
+If you are using [Bioconductor](https://www.bioconductor.org/) packages dependencies you
+need to add the following line to description file, before `Imports:` field:
+
+```{}
+biocViews:
+
+```
+
+## Suggested packages, used in tests and vignettes
+
+```{r, eval=FALSE}
+## 
+usethis::use_package("lintr", type = "Suggests")
+
+```
+
+
+# Setting package infrastucture
+
+```{r, eval=FALSE}
+#usethis::use_usethis()
+#usethis::use_rstudio()
+usethis::use_readme_rmd()
+usethis::use_mit_license()
+usethis::use_code_of_conduct()
+usethis::use_git()
+usethis::use_git_config()
+usethis::use_github(protocol = "https")
+usethis::use_news_md()
+
+```
+

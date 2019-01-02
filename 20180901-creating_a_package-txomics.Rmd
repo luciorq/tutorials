@@ -1,0 +1,514 @@
+---
+title: "txomics: Developing a package in the open"
+author: "Lucio Rezende Queiroz"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+
+# txomics
+
+```{r setup}
+knitr::opts_knit$set(root.dir = "~/projects/txomics/")
+# knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6)
+```
+
+# Before starting
+
+* Install devtools and usethis packages using:
+`install.packages("devtools")` and `install.packages("usethis")`
+* Create package folder: 
+`devtools::create("txomics")` or `usethis::create_package("txomics")`
+
+# Edit devtools options for adding metadata to package
+
+```{r, eval = FALSE}
+# here::here()
+# here::here("projects","txomics")
+# getwd()
+getOption("devtools")
+getOption("devtools.path")
+getOption("devtools.name")
+getOption("devtools.desc.author")
+getOption("devtools.desc.license")
+getOption("usethis.name")
+
+options(
+  devtools.name = "Lucio Rezende Queiroz",
+  devtools.desc.author =
+    'person(
+      "Lucio", "Rezende Queiroz",
+      email = "luciorqueiroz@gmail.com",
+      role = c("aut", "cre"),
+      comment = c(ORCID="0000-0002-6090-1834")
+    )'
+)
+
+options(
+  usethis.name = "Lucio Rezende Queiroz",
+  usethis.full_name = "Lucio Rezende Queiroz",
+  usethis.description = list(
+    `Authors@R` = 'person(
+                      "Lucio", "Rezende Queiroz", 
+                      email = "luciorqueiroz@gmail.com",
+                      role = c("aut", "cre"),
+                      comment = c(ORCID="0000-0002-6090-1834")
+                    )',
+    License = "MIT + file LICENSE",
+    Version = "0.1.0"
+  )
+)
+getOption("usethis.description")
+```
+
+# Tips for choosing the name of your package
+
+use `available::available("package_name")` to check if it is available and 
+if the name has any misleading interpretation
+
+# Change project build information
+
+Menu: Build > Configure Build Tools > check:
+* Generate Documentation with roxygen and all suboptions in `configure`
+
+Add check parameter `--as-cran` (Check Parameter - R CMD check)
+
+
+# Adding dependencies
+
+```{r, eval = FALSE}
+## CRAN packages
+cran_packages_to_use <- c(
+  "tidyr",
+  "dplyr",
+  "stringr",
+  "readxl",
+  "readr",
+  "jsonlite",
+  "purrr",
+  "ggplot2",
+  "ggrepel",
+  "ggpubr",
+  "viridis",
+  "pheatmap",
+  "dendsort",
+  "VennDiagram",
+  "rsvg",
+  "RColorBrewer",
+  "fs"
+)
+## Bioconductor packages
+bioc_packages_to_use <- c(
+  "tximport",
+  "DESeq2",
+  "fgsea"
+)
+packages_to_use <- c(cran_packages_to_use, bioc_packages_to_use)
+## Add to description file Imports filed
+output <- purrr::map(
+  packages_to_use,
+  usethis::use_package
+)
+```
+
+If you are using [Bioconductor](https://www.bioconductor.org/) packages dependencies you
+need to add the following line to description file, before `Imports:` field:
+
+```{}
+biocViews:
+
+```
+
+## Suggested packages, used in tests and vignettes
+
+```{r, eval=FALSE}
+##
+usethis::use_package("lintr", type = "Suggests")
+```
+
+
+# Adding documentation
+
+Edit function files using `#'` followed by `@tag_name detail` to add documentation
+example:
+
+```{}
+#' Add together two numbers.
+#' 
+#' @param x A number.
+#' @param y A number.
+#' @return The sum of \code{x} and \code{y}.
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+add <- function(x, y) {
+  x + y
+}
+```
+
+* In RStudio use the Code > Insert Roxygen Skeleton with the cursor over a 
+function to add the basics
+
+use `devtools::document()` to automatic generate the man folder and Rd files for each function
+```{r, eval = FALSE}
+## rstudio ctrl/cmd + shift + D
+devtools::document()
+```
+
+# Installing
+
+Running `load_all()` simulates what happen when installing your package
+```{r, eval = FALSE}
+devtools::load_all()
+```
+
+# Create a README file
+
+* The package `usethis` provide additional functionality to the package creation
+but have some overlapping functionality with devtools, e.g.:
+```{r, eval=FALSE}
+# devtools::use_readme_rmd()
+usethis::use_readme_rmd()
+```
+
+# CRAN check
+
+Use `check()` to  check if the package is suitable for CRAN submission
+```{r, eval = FALSE}
+devtools::check(document = TRUE)
+```
+
+## Licensing
+
+For this package I will be using the MIT license
+```{r, eval = FALSE}
+# devtools::use_mit_license()
+usethis::use_mit_license(name = "Lucio Rezende Queiroz")
+```
+
+## Use a Code of Conduct
+
+The devtools and usethis packages provide a templeta for a code of conduct,
+it is good practice to follow a code of conduct to provide a harassment free 
+enviroment for the development of open source tools.
+
+```{r, eval=FALSE}
+usethis::use_code_of_conduct()
+```
+
+## Version numbers
+
+The version numbers used in txomics follow the x.y.z model where x is the major version, y is the minor version and is the patch number
+
+Odd minor version are development versions (e.g.: 1.11.0) and even minor version are release candidates (e.g.: 1.12.0).
+
+Patch number version is increased for every commit or merge to development branch (e.g.: from 1.11.1 to 1.11.2)
+
+To interactively incremeant version number use 'use_version()' with major, minor
+or patch as parameter
+
+```{r, eval=FALSE}
+usethis::use_version("patch")
+```
+
+# Host your package on GitHub
+
+## Git and GitHub configuration
+
+Configure
+
+```{r,eval=FALSE}
+usethis::use_git()
+```
+
+
+```{r, eval=FALSE}
+## to check if it is already configured
+usethis::use_git_config()
+## If it is notz
+usethis::use_git_config(user.name = "luciorq", user.email = "luciorqueiroz@gmail.com")
+```
+
+```{r,eval=FALSE}
+## if needed
+# usethis::use_git("Initial commit")
+usethis::use_github(protocol = "https")
+```
+
+* Populate DESCRIPTION file with link to github Issues
+
+```{r}
+usethis::use_github_links()
+```
+
+
+# NEWS file
+
+place to add information about versions and updates
+
+```{r,eval=FALSE}
+usethis::use_news_md()
+```
+
+
+Example content
+```
+# txomics 1.0.0
+
+* txomics is now on CRAN.
+
+# txomics 0.2.1
+
+## Bug Fixes
+
+* Lots of them.
+
+# txomics 0.2.0
+
+* This is the first release of txomics.
+```
+
+# Prepare for CRAN submission
+
+It will create `cran-comments.md` file,
+you should then add it to `.Rbuildignore`, 
+so it will not be included in the package.
+
+```{r, eval=FALSE}
+usethis::use_cran_comments()
+```
+
+Check <http://r-pkgs.had.co.nz/release.html> for more information on the process
+
+### Commom mistakes to submit
+
+* single quote software names so 'Windows 8.1'
+* write R and CRAN with caps, not small letters
+* I wrote github, projectstatus, travis, rmd etc which should have been:
+* Github, Projectstatus, Travis-CI etc.
+* linked to a URL that didn't exist yet
+* used a link with http, should have been https
+
+## Check for reverse dependencies
+
+```{r,eval=FALSE}
+usethis::use_revdep()
+devtools::revdep_check()
+```
+
+## The Release
+
+```{r, eval=FALSE}
+devtools::release()
+```
+
+
+# Vignettes
+
+## Adding Vignettes
+
+```{r, eval=FALSE}
+usethis::use_vignette("using_txomics")
+```
+
+Now you will see folder `vignettes/` with the `vignettes/using_txomics.Rmd`
+
+# Continuous Integration
+
+## Travis CI
+
+travis CI allows to test the package build in different MacOS, linux and R versions
+
+```{r, eval=FALSE}
+usethis::use_travis()
+```
+
+Add configuration to `.travis.yml` file:
+```
+warnings_are_errors: true
+
+os:
+  - linux
+  - osx
+
+r:
+  - 3.4
+  - 3.5
+  - oldrel
+  - release
+  - devel
+```
+
+if a package is needed just for the travis run add to `.travis.yml` file:
+```
+r_packages:
+  - rjson
+```
+
+
+If the package have dependencies at bioconductor add the following to `.travis.yml` file:
+
+```
+bioc_packages:
+  - DESeq2
+  - tximport
+  - fgsea
+```
+
+* Travis CI is really good for testing build in MacOS and Linux, but for windows
+you will need Appveyor
+
+## Appveyor
+
+```{r, eval=FALSE}
+usethis::use_appveyor()
+```
+
+Go to <https://ci.appveyor.com/projects/new>, link your github account and turn 
+the repo on.
+Then commit and push to your repo to automatically build and test.
+
+### Alternative 'Windows' testing
+
+Another option to test build in 'Windows' environment is to use CRAN servers through
+`devtools::build_win()`
+
+## Code coverage (CodeCov) not done yet
+
+```{r,eval=FALSE}
+usethis::use_coverage("codecov")
+```
+
+Open `.travis.yml` and add:
+```r
+  after_success:
+    - Rscript -e 'covr::codecov(type = "all")'
+```
+
+`type = "all"` parameter is used to include example and vignete
+
+* commit and push your package
+* Add the badge
+
+If you want to locally test the coverage use:
+
+```{r,eval=FALSE}
+## coverage test, if not found check ``package development videos
+```
+
+# Unit tests
+
+Unit tests should be use to consistently check for undesired behavior everytime
+you change something in the package.
+
+To start using unit test you can use
+
+```{r,eval=FALSE}
+usethis::use_testthat()
+```
+
+* Create test file for a function
+
+```{r, eval = FALSE}
+# usethis::use_test(name = NULL, open = interactive())
+# usethis::use_test(name = "plot_heatmap")
+usethis::use_test(name = "function_name")
+```
+
+Directories will be created at `test/testthat` and a test script will be created
+at `tests/testthat.R`
+
+Create some unit tests and save in a script file at `tests/testthat/`. 
+Then go to Build -> Test Package or `devtools::test()`
+
+
+# Developing a Logo
+
+```{r,eval=FALSE}
+usethis::use_logo(img = "man/figures/logo.png")
+```
+
+For vector images, SVG format should be used.
+_e.g._ Add image to `man/figures/logo.svg`
+
+And add it to the readme file with a markdown tag
+`![LOGO](man/figures/logo.svg)`
+
+or you can use HTML tags 
+`<img src="man/figures/logo.svg" align="right" height=140/>`
+
+# Adding badges to github repo
+
+Badges are useful to show the status of your package and development.
+Badges are also used by machines that read your package.
+
+Write in your README file with some badges, e.g.:
+
+[![Travis-CI Build Status](https://travis-ci.org/r-lib/pkgdown.svg?branch=master)](https://travis-ci.org/r-lib/pkgdown)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/r-lib/pkgdown?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/pkgdown)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pkgdown)](https://cran.r-project.org/package=pkgdown)
+[![Coverage Status](https://img.shields.io/codecov/c/github/r-lib/pkgdown/master.svg)](https://codecov.io/github/r-lib/pkgdown?branch=master)
+
+`usethis` package has some functions to create badges for your package
+
+```{r, eval=FALSE}
+usethis::use_cran_badge()
+```
+
+
+# Create a webpage with documentation
+
+Using `pkgdown` 
+
+Run: 
+```{r, eval=FALSE}
+usethis::use_pkgdown()
+pkgdown::build_site()
+```
+
+ * After creating the files go to setting page of your github repo. e.g. https://github.com/user/repo/settings
+ * Check GitHub pages section if source is set to “master branch /docs folder”.
+
+
+### Updating page 
+
+* use `pkgdown::clean_site()` to clean older builds
+* use `pkgdown::build_site()` to rebuild the website
+
+### additional configs
+
+When including big graphics in the README, you may find it easier to use knitr::include_graphics("foo.png") combined with chunk option out.width = '100%'. This will make the graphic scale with the size of the page. [source](http://pkgdown.r-lib.org/articles/pkgdown.html)
+
+
+
+---
+
+
+# Updating your package
+
+## Prepare for next version
+
+Once your package has been accepted by CRAN, you have a couple of technical tasks to do:
+
+ * If you use GitHub, go to the repository release page. Create a new release with tag version v1.2.3 (i.e. “v” followed by the version of your package). Copy and paste the contents of the relevant NEWS.md section into the release notes.
+
+* If you use git, but not GitHub, tag the release with git tag -a v1.2.3.
+
+* Create a new heading in NEWS.md and commit the changes.
+
+# Talk about your package
+
+* Go to social media ...
+* Talk at conferences
+* Expose yourself, take critics and improve!
+* If you are a scientist, publish an article about it 
+* or even better use the package to conclude something great!
+
+
+
+
+# Appendix
+
+
+

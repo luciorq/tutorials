@@ -1,0 +1,48 @@
+# Pre
+Disable-UAC
+
+# Set PC name
+$computername = "junior"
+if ($env:computername -ne $computername) {
+    Rename-Computer -NewName $computername
+}
+
+# Set DNS upstreams
+Set-DNSClientServerAddress -InterfaceIndex $(Get-NetAdapter | Where-object {$_.Name -like "*Wi-Fi*" } | Select-Object -ExpandProperty InterfaceIndex) -ServerAddresses "8.8.8.8", "1.1.1.1", "2001:4860:4860::8888", "2001:4860:4860::8844"
+
+# Set environment variables
+setx GOPATH "$env:USERPROFILE\go"
+setx WSLENV "$env:WSLENV`:GOPATH/p:USERPROFILE/p"
+
+# Install applications
+choco install -y sysinternals
+choco install -y vscode
+choco install -y googlechrome.dev
+choco install -y 1password
+choco install -y docker-for-windows
+choco install -y cmdermini
+choco install -y discord
+choco install -y spotify
+choco install -y dropbox
+choco install -y adobereader
+choco install -y 7zip.install
+choco install -y firacode
+
+# WSL
+choco install -y Microsoft-Hyper-V-All -source windowsFeatures
+choco install -y Microsoft-Windows-Subsystem-Linux -source windowsfeatures
+Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile ~/Ubuntu.appx -UseBasicParsing
+Add-AppxPackage -Path ~/Ubuntu.appx
+
+RefreshEnv
+Ubuntu1804 install --root
+Ubuntu1804 run apt update
+Ubuntu1804 run apt upgrade
+
+# System-level configuration
+Disable-BingSearch
+Disable-GameBarTips
+
+Set-WindowsExplorerOptions -EnableShowHiddenFilesFoldersDrives -EnableShowProtectedOSFiles -EnableShowFileExtensions
+Set-TaskbarOptions -Size Small -Dock Bottom -Combine Full -Lock
+Set-TaskbarOptions -Size Small -Dock Bottom -Combine Full -AlwaysShowIconsOn

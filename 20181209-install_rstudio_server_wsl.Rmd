@@ -1,0 +1,243 @@
+---
+title: "Install RStudio Server WSL"
+author: "Lucio Rezende Queiroz"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+
+# Before starting
+
+Using ubuntu 18.04 image for Windows Subsystems for Linux
+
+# Install system dependencies
+
+
+From Rocker Org dockerfiles
+
+```bash
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
+    bash-completion \
+    ca-certificates \
+    file \
+    fonts-texgyre \
+    g++ \
+    gfortran \
+    gsfonts \
+    libblas-dev \
+    libbz2-1.0 \
+    libcurl3 \
+    libopenblas-dev \
+    libpangocairo-1.0-0 \
+    libpcre3 \
+    libpng16-16 \
+    libreadline7 \
+    libtiff5 \
+    liblzma5 \
+    locales \
+    make \
+    unzip \
+    zip \
+    zlib1g
+   # libicu57 \
+  #  libjpeg62-turbo \
+
+# Dependencies for building R from source
+sudo apt-get install -y --no-install-recommends \
+    curl \
+    default-jdk \
+    libbz2-dev \
+    libcairo2-dev \
+    libcurl4-openssl-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libicu-dev \
+    libpcre3-dev \
+    libpng-dev \
+    libreadline-dev \
+    libtiff5-dev \
+    liblzma-dev \
+    libx11-dev \
+    libxt-dev \
+    perl \
+    tcl8.6-dev \
+    tk8.6-dev \
+    texinfo \
+    texlive-extra-utils \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-recommended \
+    x11proto-core-dev \
+    xauth \
+    xfonts-base \
+    xvfb \
+    zlib1g-dev
+```
+
+# Installing R with Development dependencies
+
+```bash
+# 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+
+sudo apt-get update
+sudo apt-get install r-base-dev
+
+# Check R version
+
+R --version
+```
+
+```bash
+# From rstudio dockerfile
+sudo apt-get install -y --no-install-recommends \
+    file \
+    git \
+    libapparmor1 \
+    libcurl4-openssl-dev \
+    libedit2 \
+    libssl-dev \
+    lsb-release \
+    psmisc \
+    procps \
+    python-setuptools \
+    sudo \
+    wget
+```
+
+# Install Rstudio Server
+
+```bash
+# Preview version
+RSTUDIO_VERSION=1.2.1181
+
+sudo apt-get update
+sudo apt-get install gdebi-core
+
+wget https://s3.amazonaws.com/rstudio-ide-build/server/trusty/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+
+sudo gdebi rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+
+rstudio-server status
+```
+
+
+```bash
+rm rstudio-server-*-amd64.deb
+# Symlink pandoc & standard pandoc templates for use system-wide
+sudo ln -s /usr/lib/rstudio-server/bin/pandoc/pandoc /usr/local/bin
+sudo ln -s /usr/lib/rstudio-server/bin/pandoc/pandoc-citeproc /usr/local/bin
+git clone https://github.com/jgm/pandoc-templates
+sudo mkdir -p /opt/pandoc/templates
+sudo cp -r pandoc-templates*/* /opt/pandoc/templates && rm -rf pandoc-templates*
+sudo mkdir /root/.pandoc && sudo ln -s /opt/pandoc/templates /root/.pandoc/templates
+
+## configure git not to request password each time
+sudo git config --system credential.helper 'cache --timeout=3600'
+sudo git config --system push.default simple
+```
+
+# rocker/tidyverse dependencies
+
+```bash
+# From tidyverse dockerfile
+sudo apt-get install -y --no-install-recommends \
+  libxml2-dev \
+  libcairo2-dev \
+  libsqlite3-dev \
+  libmariadbd-dev \
+  libmariadb-client-lgpl-dev \
+  libpq-dev \
+  libssh2-1-dev \
+  unixodbc-dev
+```
+
+## Install R Packages
+
+```{r, eval=FALSE}
+packages_to_install <- c(
+    "tidyverse",
+    "dplyr",
+    "devtools",
+    "formatR",
+    "remotes",
+    "selectr",
+    "caTools",
+    "BiocManager")
+install.packages(packages_to_install)
+```
+
+# rocker/verse dependencies
+
+```bash
+PATH=$PATH:/opt/TinyTeX/bin/x86_64-linux/
+
+wget "https://travis-bin.yihui.name/texlive-local.deb"
+sudo dpkg -i texlive-local.deb
+rm texlive-local.deb
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
+    ## for rJava
+    default-jdk \
+    ## Nice Google fonts
+    fonts-roboto \
+    ## used by some base R plots
+    ghostscript \
+    ## used to build rJava and other packages
+    libbz2-dev \
+    libicu-dev \
+    liblzma-dev \
+    ## system dependency of hunspell (devtools)
+    libhunspell-dev \
+    ## system dependency of hadley/pkgdown
+    libmagick++-dev \
+    ## rdf, for redland / linked data
+    librdf0-dev \
+    ## for V8-based javascript wrappers
+    libv8-dev \
+    ## R CMD Check wants qpdf to check pdf sizes, or throws a Warning
+    qpdf \
+    ## For building PDF manuals
+    texinfo \
+    ## for git via ssh key
+    ssh \
+ ## just because
+    less \
+    vim
+```
+
+```{r, eval=FALSE}
+install.packages("tinytex")
+```
+
+
+```bash
+ && wget -qO- \
+    "https://github.com/yihui/tinytex/raw/master/tools/install-unx.sh" | \
+    sh -s - --admin --no-path \
+  && mv ~/.TinyTeX /opt/TinyTeX \
+  && /opt/TinyTeX/bin/*/tlmgr path add \
+  && tlmgr install metafont mfware inconsolata tex ae parskip listings \
+  && tlmgr path add \
+  && Rscript -e "tinytex::r_texmf()" \
+  && chown -R root:staff /opt/TinyTeX \
+  && chown -R root:staff /usr/local/lib/R/site-library \
+  && chmod -R g+w /opt/TinyTeX \
+  && chmod -R g+wx /opt/TinyTeX/bin \
+  && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
+  && install2.r --error PKI \
+  ## And some nice R packages for publishing-related stuff
+  && install2.r --error --deps TRUE \
+    bookdown rticles rmdshower
+#
+```
+
+
+## Cleaning install
+
+```bash
+sudo apt-get clean
+sudo rm -rf /var/lib/apt/lists/
+```

@@ -1,0 +1,301 @@
+---
+title: "aaegdata development"
+author: "Lucio Rezende Queiroz"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: github_document
+---
+
+```{r setup}
+knitr::opts_knit$set(root.dir = '~/projects/aaegdata/' )
+```
+
+```{r, eval=FALSE}
+# Run these from the R console
+
+# If devtools package is not already installed
+install.packages("devtools") 
+install.packages("usethis")
+# Set personal information
+options("devtools.name" = "Lucio Rezende Queiroz",
+        "devtools.desc.author" = 'person("Lucio", "Rezende Queiroz", 
+                                    email = "luciorqueiroz@gmail.com",
+                                    role = c("aut", "cre"),
+                                    comment = c(ORCID="0000-0002-6090-1834")
+                                  )'
+        )
+
+options(
+  usethis.name = "Lucio Rezende Queiroz",
+  usethis.description = list(
+    `Authors@R` = 'person("Lucio", "Rezende Queiroz", 
+                          email = "luciorqueiroz@gmail.com", 
+                          role = c("aut", "cre"),
+                          comment = c(ORCID="0000-0002-6090-1834")
+                   )',
+      License = "MIT + file LICENSE",
+      Version = "0.1.0"
+  )
+)
+
+getOption("devtools.name")
+getOption("usethis.name")
+```
+
+```{r, eval=FALSE}
+# Create new package. Directory must not exist. 
+# This also creates a new RStudio project.
+usethis::create_package("aaegdata")
+```
+Open your new data package using “Open project…” in RStudio. Then run this code from the console:
+
+# Change project build information
+
+Menu: Build > Configure Build Tools > check:
+* Generate Documentation with roxygen and all suboptions in `configure`
+
+Add check parameter `--as-cran` (Check Parameter - R CMD check)
+
+```{r, eval=FALSE}
+
+```
+
+# Adding structure
+
+```{r, eval=FALSE}
+# Add license 
+## Prefer open source licenses, for maximum reuse and redistribution
+usethis::use_mit_license( name = "Lucio Rezende Queiroz" )
+```
+
+```{r, eval = FALSE}
+# Run this code after opening the new package in RStudio
+
+# Set up the data-raw directory
+usethis::use_data_raw()
+
+# Create a data processing script in the data-raw directory. 
+# You can use any name you want.
+file.create("data-raw/process.R")
+
+# This script in the R directory will contain the documentation.
+# You can use any name you want.
+file.create("R/data.R")
+```
+
+### Version control
+
+```{r, eval=FALSE}
+## to check if it is already configured
+usethis::use_git_config()
+## If it is notz
+usethis::use_git_config(user.name = "luciorq", user.email = "luciorqueiroz@gmail.com")
+
+# Initialize git repository (optional)
+usethis::use_git()
+
+# Initialize GitHub repo
+usethis::use_github(protocol = "https")
+
+```
+
+Next:
+* Add data creation scripts in 'data-raw'
+* Use usethis::use_data() to add data to package
+
+Put your data files into the data-raw folder. Your new package directory should look something like this:
+
+IMAGE{}
+
+Write your data processing code in the data-raw/process.R script. It would look something like this:
+
+```{r, eval = FALSE}
+# data-raw/process.R
+# Data import and processing pipeline
+
+library(readr)
+library(readxl)
+
+pendulum <- read_csv("data-raw/pendulum data.csv")
+demographics <- read_excel("data-raw/Demographics.xlsx")
+
+# Data processing code here...
+
+# This should be the last line
+usethis::use_data(pendulum, demographics, overwrite = TRUE, compress = "xz")
+```
+
+That last line writes your R data frames and other data objects to files in the data directory (not the data-raw directory!). The data directory will be created if it does not exist.
+
+Edit your DESCRIPTION file as specified in Hadley Wickham’s book on R packages: http://r-pkgs.had.co.nz/description.html.
+
+You won’t need Imports or Suggests.
+
+At this point you should confirm that you can build and install your package. You should see a Build tab in RStudio. Open it and click Build and Install (older RStudio versions) or Install and Restart (newer RStudio versions), which will build the package and install it in your package library. You should see your package in the Packages tab, and you should have access to the data frame objects in any script where you include: library(my_data).
+
+# Document your data
+
+One of the biggest advantages of creating a data package is that it provides a very convenient system for documenting your data, and for accessing that documentation. Although they are not required, I recommend first installing one or both of these utility packages:
+
+```{r, eval = FALSE}
+install.packages("sinew")
+#devtools::install_github("mdlincoln/docthis")
+```
+
+Open your currently blank R/data.R file, which is where you will add the documentation using roxygen.
+
+Then use the makeOxygen function from the sinew package to create skeleton documentation, e.g., for the pendulum data frame:
+
+sinew::makeOxygen(pendulum, add_fields = "source")
+
+
+```{r, eval = FALSE}
+sinew::makeOxygen(pendulum, add_fields = "source")
+
+```
+
+This will print out a skeleton that you copy and paste into your currently empty R/data.R file:
+```{r, eval = FALSE}
+# This goes in R/data.R
+
+#' @title DATASET_TITLE
+#' @description DATASET_DESCRIPTION
+#' @format A data frame with 1559 rows and 5 variables:
+#' \describe{
+#'   \item{\code{Time (s)}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{Acceleration - x (m/s²)}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{Acceleration - y (m/s²)}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{Acceleration - z (m/s²)}}{double COLUMN_DESCRIPTION}
+#'   \item{\code{Acceleration - resultant (m/s²)}}{double COLUMN_DESCRIPTION} 
+#'}
+#' @source \url{http://somewhere.important.com/}
+"pendulum"
+```
+
+Do that for each data frame in your package, adding each skeleton to R/data.R. Edit the parts in ALL_CAPS. sinew and docthis also provide RStudio addins, available in the Addins menu. Read their documentation to learn how to use them.
+
+# Building your data package
+
+The final step in creating a data package is to build the package along with the new documentation.
+
+In the Build tab, first select Document from the More menu – this will generate the documentation from from the roxygen markup you created above. Then click Install and Restart (or Build and Reload). You should now be able to access the help page for each data frame in the standard way:
+```{r, eval=FALSE}
+## Add readme
+usethis::use_readme_rmd()
+## Add code of conduct
+usethis::use_code_of_conduct()
+```
+
+?pendulum
+You’re done! Just remember, when you change something, update the version number in the DESCRIPTION file and rebuild your package.
+
+FROM: https://grasshoppermouse.github.io/2017/10/18/put-your-data-in-an-r-package/
+
+# Data Details
+
+09/07/2018 <br>
+Since VectorBase deprecated aaegL3, VectorBase will be used for aaegL5 and ensembl
+metazoa will be used for the aaegL3
+
+ensembl metazoa still hosts aaegL3 BioMart at:
+http://metazoa.ensembl.org/biomart/martview/a5ff5b41815b155c63b6896c44ac62bf
+
+VectorBase aaegL5 BioMart at:
+https://biomart.vectorbase.org/biomart/martview/037237220834efe6717c0ab1187211b9
+
+
+## Ensembl Metazoa Genes 39 - AaegL3 genes
+`data-raw/ensembl/` <br>
+* Features Attributes selected: <br>
+* **Gene Description**: 'Gene stable ID', 'Transcript stable ID', 'Gene description', 'Gene name'
+[Link](http://metazoa.ensembl.org/biomart/martview?VIRTUALSCHEMANAME=metazoa_mart&ATTRIBUTES=aaegypti_eg_gene.default.feature_page.ensembl_gene_id|aaegypti_eg_gene.default.feature_page.ensembl_transcript_id|aaegypti_eg_gene.default.feature_page.description|aaegypti_eg_gene.default.feature_page.external_gene_name&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/ensembl/aaegl3_ensembl_gene_description.csv"
+* **Gene Ontology**: 'Gene stable ID', 'GO term accession', 'GO term name', 'GO domain'
+[Link](http://metazoa.ensembl.org/biomart/martview?VIRTUALSCHEMANAME=metazoa_mart&ATTRIBUTES=aaegypti_eg_gene.default.feature_page.ensembl_gene_id|aaegypti_eg_gene.default.feature_page.go_id|aaegypti_eg_gene.default.feature_page.name_1006|aaegypti_eg_gene.default.feature_page.namespace_1003&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/ensembl/aaegl3_ensembl_go.csv"
+* **KEGG**: 'Gene stable ID', 'KEGG ID', 'KEGG Pathway and Enzyme ID'
+[Link](http://metazoa.ensembl.org/biomart/martview?VIRTUALSCHEMANAME=metazoa_mart&ATTRIBUTES=aaegypti_eg_gene.default.feature_page.ensembl_gene_id|aaegypti_eg_gene.default.feature_page.kegg|aaegypti_eg_gene.default.feature_page.kegg_enzyme&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/ensembl/aaegl3_ensembl_kegg.csv"
+* **Gene database conversion**: 'Gene stable ID', 'NCBI gene ID'
+[Link](http://metazoa.ensembl.org/biomart/martview?VIRTUALSCHEMANAME=metazoa_mart&ATTRIBUTES=aaegypti_eg_gene.default.feature_page.ensembl_gene_id|aaegypti_eg_gene.default.feature_page.entrezgene&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/ensembl/aaegl3_ensembl_gene_ncbi.csv"
+* **Ortologs to D. mel**: 'Gene stable ID', 'Drosophila melanogaster gene stable ID', 'Drosophila melanogaster gene name'
+[Link](http://metazoa.ensembl.org/biomart/martview?VIRTUALSCHEMANAME=metazoa_mart&ATTRIBUTES=aaegypti_eg_gene.default.homologs.ensembl_gene_id|aaegypti_eg_gene.default.homologs.dmelanogaster_eg_homolog_ensembl_gene|aaegypti_eg_gene.default.homologs.dmelanogaster_eg_homolog_associated_gene_name&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/ensembl/aaegl3_ensembl_dmel_ortolog.csv"
+ 
+## VectorBase Genes - LVP_AGWG AaegL5.1 genes
+`data-raw/vectorbase/` <br>
+* **Gene Description**: 'Gene stable ID', 'Transcript stable ID', 'Gene description', 'Gene name'
+[Link](http://biomart.vectorbase.org/biomart/martview?VIRTUALSCHEMANAME=vb_mart_1806&ATTRIBUTES=alvpagwg_eg_gene.default.feature_page.ensembl_gene_id|alvpagwg_eg_gene.default.feature_page.ensembl_transcript_id|alvpagwg_eg_gene.default.feature_page.description|alvpagwg_eg_gene.default.feature_page.external_gene_name&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/vectorbase/aaegl51_vectorbase_gene_description.csv"
+* **Gene Ontology**: 'Gene stable ID', 'GO term accession', 'GO term name', 'GO domain'
+[Link](http://biomart.vectorbase.org/biomart/martview?VIRTUALSCHEMANAME=vb_mart_1806&ATTRIBUTES=alvpagwg_eg_gene.default.feature_page.ensembl_gene_id|alvpagwg_eg_gene.default.feature_page.go_id|alvpagwg_eg_gene.default.feature_page.name_1006|alvpagwg_eg_gene.default.feature_page.namespace_1003&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/vectorbase/aaegl51_vectorbase_go.csv"
+* **KEGG**: 'Gene stable ID', 'KEGG Pathway and Enzyme ID'
+[Link](http://biomart.vectorbase.org/biomart/martview?VIRTUALSCHEMANAME=vb_mart_1806&ATTRIBUTES=alvpagwg_eg_gene.default.feature_page.ensembl_gene_id|alvpagwg_eg_gene.default.feature_page.kegg_enzyme&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/vectorbase/aaegl51_vectorbase_kegg.csv"
+* **Gene database conversion**: 'Gene stable ID', 'NCBI gene ID'
+[Link](http://biomart.vectorbase.org/biomart/martview?VIRTUALSCHEMANAME=vb_mart_1806&ATTRIBUTES=alvpagwg_eg_gene.default.feature_page.ensembl_gene_id|alvpagwg_eg_gene.default.feature_page.entrezgene&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/vectorbase/aaegl51_vectorbase_gene_ncbi.csv"
+* **Ortologs to D. mel**: 'Gene stable ID', 'Drosophila melanogaster gene stable ID', 'Drosophila melanogaster gene name', 'Drosophila melanogaster homology type', '%id. target Drosophila melanogaster gene identical to query gene', '%id. query gene identical to target Drosophila melanogaster gene', 'Drosophila melanogaster protein or transcript stable ID'
+[Link](http://biomart.vectorbase.org/biomart/martview?VIRTUALSCHEMANAME=vb_mart_1806&ATTRIBUTES=alvpagwg_eg_gene.default.homologs.ensembl_gene_id|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_ensembl_gene|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_associated_gene_name|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_orthology_type|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_perc_id|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_perc_id_r1|alvpagwg_eg_gene.default.homologs.dmelanogaster_eg_homolog_ensembl_peptide&FILTERS=&VISIBLEPANEL=resultspanel) <br>
+Path to file: "data-raw/vectorbase/aaegl51_vectorbase_dmel_ortolog.csv"
+
+## VectorBase - ID mappings - conversions
+
+https://www.vectorbase.org/downloads?field_organism_taxonomy_tid%5B%5D=372&field_download_file_type_tid%5B%5D=1228&field_download_file_format_tid=All&field_status_value=Current
+
+[Stable ID mapping between genesets AaegL3.5 and AaegL5.1](https://www.vectorbase.org/download/aedes-aegypti-liverpoolmappingsaaegl35-aaegl51txt) <br>
+Path to file: "data-raw/id_mappings/Aedes-aegypti-Liverpool_MAPPINGS_AaegL3.5-AaegL5.1.txt" <br>
+[Stable ID mapping between genesets AaegL3.3 and AaegL3.4 - RNA gene update](https://www.vectorbase.org/download/aedes-aegypti-liverpoolmappingsaaegl33-aaegl34txt) <br>
+Path to file: "data-raw/id_mappings/Aedes-aegypti-Liverpool_MAPPINGS_AaegL3.3-AaegL3.4.txt" <br>
+[Liverpool strain gene prediction stable identifier mapping for ncRNA from the AaegL2.2 to AaegL3.1 geneset](https://www.vectorbase.org/download/aedes-aegypti-liverpoolmodificationsaaegl22-aaegl31-ncrnatxt) <br>
+Path to file: "data-raw/id_mappings/Aedes-aegypti-Liverpool_MODIFICATIONS_AaegL2.2-AaegL3.1-ncRNA.txt" <br>
+
+## KEGG BRITE: KEGG Orthology
+[KEGG Orthology JSON file](https://www.kegg.jp/kegg-bin/download_htext?htext=aag00001&format=json&filedir=) <br>
+Path to file: "data-raw/kegg/aag00001.json"
+
+## STRING DB V 10.5
+_D. melanogaster_ code: 7227
+[D. melanogaster protein protein interaction table](https://stringdb-static.org/download/protein.links.v10.5/7227.protein.links.v10.5.txt.gz)
+Path to file: "data-raw/ppi/7227.protein.links.v10.5.txt"
+
+_A.aegypti_ code: 7159
+[D. melanogaster protein protein interaction table](https://stringdb-static.org/download/protein.links.v10.5/7159.protein.links.v10.5.txt.gz)
+Path to file: "data-raw/ppi/7159.protein.links.v10.5.txt"
+
+----
+
+# Download NCBI invertebrate gene data
+
+download from : ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Invertebrates/All_Invertebrates.gene_info.gz
+
+-----
+
+## Raw data path
+
+```{r, eval=FALSE}
+"data-raw/kegg/aag00001.json"
+
+aaegdata::aaeg_dmel_orthologs
+
+aaegdata::transcript_to_gene
+
+```
+
+## Using data files that are to big for CRAN submission
+
+```{r}
+
+```
+
+
+## Adding DOI to Package release:
+
+* Create account in (https://zenodo.org/)
+* Link github and follow the instructions to add a release
+* After first release a Badge can be added to the repository
+
+[![DOI](https://zenodo.org/badge/138066714.svg)](https://zenodo.org/badge/latestdoi/138066714)
+
+
