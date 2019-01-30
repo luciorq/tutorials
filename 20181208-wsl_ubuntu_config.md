@@ -134,6 +134,14 @@ sudo curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOS
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
+# Set the font 
+
+It is also possible to specify and share fonts for Windows.
+
+```
+sudo ln -s /mnt/c/Windows/Fonts /usr/share//fonts/windows
+sudo fc-cache -fv
+```
 
 ----
 

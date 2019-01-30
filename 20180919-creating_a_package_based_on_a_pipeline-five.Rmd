@@ -77,7 +77,8 @@ cran_packages_to_use <- c(
   "fs",
   "here",
   "ggrepel",
-  "optparse"
+  "optparse",
+  "processx"
 )
 ## Bioconductor packages
 bioc_packages_to_use <- c()
