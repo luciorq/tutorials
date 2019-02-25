@@ -111,11 +111,12 @@ sudo apt-get install -y --no-install-recommends \
 
 ```bash
 # Preview version
-RSTUDIO_VERSION=1.2.1181
+RSTUDIO_VERSION=1.2.1293
 
 sudo apt-get update
 sudo apt-get install gdebi-core
 
+# https://s3.amazonaws.com/rstudio-ide-build/server/bionic/amd64/rstudio-server-1.2.1293-amd64.deb
 wget https://s3.amazonaws.com/rstudio-ide-build/server/trusty/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
 
 sudo gdebi rstudio-server-${RSTUDIO_VERSION}-amd64.deb

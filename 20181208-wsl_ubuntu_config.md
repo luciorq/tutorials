@@ -12,6 +12,7 @@
 
 # Update distro (Ubuntu)
 
+```
 sudo apt-get update
 
 sudo apt-get upgrade
@@ -21,7 +22,9 @@ sudo apt-get install \
   git \
   htop \
   dstat \
-  vim
+  vim \
+  build-essential
+```
 
 # Install Hyper on Windows
 
@@ -34,6 +37,8 @@ sudo apt-get install \
 * Use this so WSL files can be accessible by windows native tools
 
 `ln -s /mnt/c/projects/ $HOME/projects`
+
+---
 
 # Docker
 
@@ -134,18 +139,8 @@ sudo curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOS
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-# Set the font 
-
-It is also possible to specify and share fonts for Windows.
-
-```
-sudo ln -s /mnt/c/Windows/Fonts /usr/share//fonts/windows
-sudo fc-cache -fv
-```
-
 ----
 
-# DEPRECATED from here
 
 # Symlink mounted windows filesystem to linux home
 

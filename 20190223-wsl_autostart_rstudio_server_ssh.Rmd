@@ -1,0 +1,57 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## SSH server
+
+sudo vim /etc/ssh/sshd_config
+Change Port to 2222 
+Change PasswordAuthentication to yes
+
+* Restart the ssh server:
+sudo service ssh --full-restart
+
+# To auto start
+sudo service ssh start
+
+add the following line: 
+echo 'C:\Windows\System32\bash.exe -c "sudo /usr/sbin/sshd -D"' > sshd.bat
+mv ssh.bat /mnt/c/linux/ssh.bat 
+
+======================
+## RStudio Server
+
+mkdir -p ~/.local/bin/
+echo "sudo service rstudio-server start" >> ~/.local/bin/start_rstudio-server.sh
+chmod +x ~/.local/bin/start_rstudio-server.sh
+
+sudo visudo
+
+%sudo ALL=(root) NOPASSWD: /home/<USER>/.local/bin/start_rstudio-server.sh
+
+
+* Start menu -> “Task Scheduler” -> run it
+  - click “Task Scheduler Library” on the left 
+  - then “Create Task…” on the right to create a new task:
+  - Name the task anything you want, like “Start rstudioserver”
+  - Under the “Triggers” tab, click “New…” to add a new trigger for this task
+  - In the “Begin the task” dropdown select “At log on”
+  - Select “Any user”
+  - Under the “Actions” tab, click “New…” to add a new action for this task
+  - Pick “Start a program” for the action type
+  - then enter C:\Windows\System32\bash.exe as the program to run
+  - Finally, as the last and most important step, 
+    - at “Add arguments (optional)” set this argument string to 
+    - run the command with: -c "sudo ~/.local/bin/start_rstudio-server.sh"
+
+That’s all you need.
+When you log into Windows next this task will be triggered and run your custom script as root 
+and start RStudio Server and any other services you decide to spin up.
+
+Hopefully this will make developing on Windows with Linux tooling even easier 
+than WSL already does!
