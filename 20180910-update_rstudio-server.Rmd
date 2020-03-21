@@ -25,10 +25,11 @@ sudo apt-get update && \
 * Change <VERSION> for the latest stable or preview version
 
 ```bash
-RSTUDIO_VERSION="1.3.895"
+RSTUDIO_VERSION="1.3.923"
 wget https://s3.amazonaws.com/rstudio-ide-build/server/bionic/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
 # wget https://s3.amazonaws.com/rstudio-ide-build/desktop/debian9/x86_64/rstudio-server-<VERSION>-amd64.deb
-# https://s3.amazonaws.com/rstudio-ide-build/server/debian9/x86_64/rstudio-server-1.2.907-amd64.deb
+# https://s3.amazonaws.com/rstudio-ide-build/server/debian9/x86_64/rstudio-server-1.3.923-amd64.deb
+# https://s3.amazonaws.com/rstudio-ide-build/server/bionic/amd64/rstudio-server-1.3.923-amd64.deb
 ```
 
 ## Run the installer
