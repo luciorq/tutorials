@@ -507,8 +507,6 @@ Once your package has been accepted by CRAN, you have a couple of technical task
 
 
 
-
 # Appendix
 
-
-
+Update to this topic in [Steps to release a Package](20200320-steps_release_a_package.md)
