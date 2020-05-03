@@ -1,3 +1,6 @@
+---
+/bioinfo/beast.html
+---
 
 # BEAST
 
