@@ -15,9 +15,10 @@ knitr::opts_knit$set(root.dir = "~/projects/txomics/")
 # Before starting
 
 * Install devtools and usethis packages using:
-`install.packages("devtools")` and `install.packages("usethis")`
+`install.packages("devtools")`, `install.packages("usethis")` and `install.packages("pkgbuild")`
+* Check if your R installation have the capabilities related to building packages from source using: `pkgbuild::check_build_tools()`
 * Create package folder: 
-`devtools::create("txomics")` or `usethis::create_package("txomics")`
+`usethis::create_package("txomics")`
 
 # Edit devtools options for adding metadata to package
 
@@ -479,6 +480,13 @@ pkgdown::build_site()
 ### additional configs
 
 When including big graphics in the README, you may find it easier to use knitr::include_graphics("foo.png") combined with chunk option out.width = '100%'. This will make the graphic scale with the size of the page. [source](http://pkgdown.r-lib.org/articles/pkgdown.html)
+
+### Checking package situation
+
+```{r, eval=FALSE}
+usethis::proj_sitrep()
+usethis::git_sitrep()
+```
 
 
 
