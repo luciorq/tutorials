@@ -1,5 +1,5 @@
 ---
-/bioinfo/beast.html
+/bioinfo/install-beast-phylogeny.html
 ---
 
 # BEAST
