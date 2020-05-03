@@ -1,5 +1,5 @@
 ---
-/bioinfo/install-beast-phylogeny.html
+permalink: /bioinfo/install-beast-phylogeny.html
 ---
 
 # BEAST
@@ -32,7 +32,7 @@ make check
 
 If installing to user home add variables
 
-```
+```bash
 # This is not necessary because /usr/local/lib is already included in /etc/ld.so.conf.d/libc.conf
 # export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
 # This is also not necessary
@@ -42,7 +42,7 @@ If installing to user home add variables
 ### JAVA
 
 jdk 8 is recommended by beast manual
- 
+
 ```bash
 sudo apt-get install openjdk-8-jre openjdk-8-jdk
 ```
@@ -69,7 +69,7 @@ sudo rm /usr/local/BEASTv1.10.4.tgz
 
 Edit programs to add dependencies path for all users
 
-*  add `export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH` to all users
+* add `export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH` to all users
 
 ```bash
 sudo vim /etc/profile.d/bioinfo-programs.sh
