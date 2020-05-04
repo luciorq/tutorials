@@ -35,13 +35,13 @@ If installing to user home add variables
 ```bash
 # This is not necessary because /usr/local/lib is already included in /etc/ld.so.conf.d/libc.conf
 # export LD_LIBRARY_PATH=$HOME/lib:$LD_LIBRARY_PATH
-# This is also not necessary
+# This is also not necessary if pkgconfig is inside /usr/local/lib/
 # export PKG_CONFIG_PATH=$HOME/lib/pkgconfig:$PKG_CONFIG_PATH
 ```
 
 ### JAVA
 
-jdk 8 is recommended by beast manual
+jdk 8 is recommended by BEAST manual
 
 ```bash
 sudo apt-get install openjdk-8-jre openjdk-8-jdk
@@ -63,7 +63,7 @@ wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.1
 
 ```bash
 sudo tar -C /usr/local -zxvf BEASTv1.10.4.tgz
-sudo chown -R root:root /usr/local/BEASTv1.10.4
+sudo chown -R root:root /usr/local/BEASTv1.10.4 # Apparently the software is developed in a MacOS and the the owner is 504 (staff), not root
 sudo rm /usr/local/BEASTv1.10.4.tgz
 ```
 
@@ -73,7 +73,7 @@ Edit programs to add dependencies path for all users
 
 ```bash
 sudo vim /etc/profile.d/bioinfo-programs.sh
-# add LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+# add export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 sudo chmod +x /etc/profile.d/bioinfo-programs.sh
 ```
 
