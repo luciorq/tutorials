@@ -1,5 +1,5 @@
 ---
-permalink: /bioinfo/install-beast-phylogeny.html
+permalink: /wsl/wsl_ubuntu_install.html
 title: Install WSL
 author: Lucio Rezende Queiroz
 date: 2020-05-13
