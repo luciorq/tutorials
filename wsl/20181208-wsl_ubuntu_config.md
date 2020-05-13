@@ -1,12 +1,26 @@
-# Windows configurations
+---
+permalink: /bioinfo/install-beast-phylogeny.html
+title: Installing BEAST on Ubuntu Server
+author: Lucio Rezende Queiroz
+date: 2020-05-13
+---
 
-* Execute those commands in a Windows PowerShell with Administrative privileges
+# Install GNU/LINUX on Windows through WSL
 
-# Activate WSL feature On Windows
+## Activate WSL feature On Windows
 
+* Execute the following commands in a Windows PowerShell with Administrative privileges
 * Run Command pront as administrator and execute
 
-`Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux`
+```PS
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux`
+```
+
+For WSL2 also run:
+
+```PS
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+```
 
 * Download Linux distribution of choice
 

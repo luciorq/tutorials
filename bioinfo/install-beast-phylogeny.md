@@ -1,5 +1,8 @@
 ---
 permalink: /bioinfo/install-beast-phylogeny.html
+title: Installing BEAST on Ubuntu Server
+author: Lucio Rezende Queiroz
+date: 2020-05-03
 ---
 
 # BEAST
