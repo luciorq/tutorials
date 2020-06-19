@@ -1,5 +1,5 @@
 ---
-permalink: /wsl/wsl_ubuntu_install.html
+permalink: /wsl/wsl-ubuntu-install.html
 title: Install WSL
 author: Lucio Rezende Queiroz
 date: 2020-05-13
@@ -22,7 +22,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 ```
 
-A restart will probablu be necessary.
+A restart will probably be necessary.
 
 ## Install Ubuntu
 
@@ -77,6 +77,8 @@ Your Linux files are stored at:
 ### Additional info
 
 Documentation:
+
+* [Config development environment tutorial](wsl/config-wsl-ansible)
 
 ---
 

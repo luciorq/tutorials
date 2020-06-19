@@ -1,8 +1,8 @@
 # GPD Pocket
 
-  * Ubuntu Mate gpd specific ISO installation. [Link](https://ubuntu-mate.org/gpd-pocket/)
+* Ubuntu Mate gpd specific ISO installation. [Link](https://ubuntu-mate.org/gpd-pocket/)
 
-  * Ubuntu Desktop
+* Ubuntu Desktop
 
 # Install gpd pocket Hardware specific changes
 
@@ -17,10 +17,10 @@ sudo ./gpd-pocket-ubuntu.sh enable # || disable
 
 ## create gpd respin ISO
 
-  * Download an .iso image for one of the Ubuntu 18.10 (or newer) flavours.
-  * Edit `gpd-pocket-ubuntu-respin.sh` and update the `ISO_IN=` with the full path the .iso your downloaded.
+* Download an .iso image for one of the Ubuntu 18.10 (or newer) flavours.
+* Edit `gpd-pocket-ubuntu-respin.sh` and update the `ISO_IN=` with the full path the .iso your downloaded.
 
-```
+```bash
 sudo ./gpd-pocket-ubuntu-respin.sh
 ```
 
