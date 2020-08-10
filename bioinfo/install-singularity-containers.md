@@ -1,8 +1,8 @@
 ---
 permalink: /bioinfo/install-singularity-containers.html
-title: Installing EMBOSS on Ubuntu Server
+title: Installing Singularity Containers on Ubuntu Server
 author: Lucio Rezende Queiroz
-date: 2020-06-02
+date: 2020-08-01
 ---
 
 # Singularity Containers
@@ -12,7 +12,8 @@ date: 2020-06-02
 * System dependencies
 
 ```bash
-sudo apt-get update && sudo apt-get install -y \
+sudo apt-get update \
+  && sudo apt-get install -y \
     build-essential \
     libssl-dev \
     uuid-dev \
@@ -35,7 +36,7 @@ sudo apt-get update && sudo apt-get install -y \
 ```bash
 cd /usr/local
 # https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
-export VERSION=1.14.3 \
+export VERSION=1.14.6 \
        OS=linux \
        ARCH=amd64 \
   && wget -O /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz \
@@ -52,10 +53,10 @@ go version
 ## Singularity
 
 ```bash
+# https://github.com/hpcng/singularity/releases/download/v3.6.1/singularity-3.6.1.tar.gz
 # https://github.com/hpcng/singularity/releases/download/v3.6.0-rc.4/singularity-3.6.0-rc.4.tar.gz
-# https://github.com/hpcng/singularity/releases/download/v3.6.0-rc.3/singularity-3.6.0-rc.3.tar.gz
 # adjust Version as necessary
-export VERSION=3.6.0-rc.4 \
+export VERSION=3.6.1 \
   &&  wget -O /tmp/singularity-${VERSION}.tar.gz https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz \
   && sudo tar -C /usr/local -xzf /tmp/singularity-${VERSION}.tar.gz \
   && cd /usr/local/singularity \
@@ -75,7 +76,7 @@ DONE!
 
 ----
 
-NOT USED YET, probably never will
+NOT USED YET, probably **never will**
 
 ## Singularity CRI
 
