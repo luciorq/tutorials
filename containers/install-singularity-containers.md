@@ -1,11 +1,13 @@
 ---
-permalink: /bioinfo/install-singularity-containers.html
-title: Installing Singularity Containers on Ubuntu Server
+permalink: /containers/install-singularity-containers
+title: Installing Singularity Containers
 author: Lucio Rezende Queiroz
-date: 2020-08-01
+date: 2020-09-28
 ---
 
 # Singularity Containers
+
+Tested on Ubuntu 20.04
 
 ## Dependencies
 
@@ -35,8 +37,8 @@ sudo apt-get update \
 
 ```bash
 cd /usr/local
-# https://dl.google.com/go/go1.14.3.linux-amd64.tar.gz
-export VERSION=1.14.6 \
+# https://dl.google.com/go/go1.15.2.linux-amd64.tar.gz
+export VERSION=1.15.2 \
        OS=linux \
        ARCH=amd64 \
   && wget -O /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz \
@@ -53,10 +55,9 @@ go version
 ## Singularity
 
 ```bash
-# https://github.com/hpcng/singularity/releases/download/v3.6.1/singularity-3.6.1.tar.gz
-# https://github.com/hpcng/singularity/releases/download/v3.6.0-rc.4/singularity-3.6.0-rc.4.tar.gz
+# https://github.com/hpcng/singularity/releases/download/v3.6.3/singularity-3.6.3.tar.gz
 # adjust Version as necessary
-export VERSION=3.6.1 \
+export VERSION=3.6.3 \
   &&  wget -O /tmp/singularity-${VERSION}.tar.gz https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz \
   && sudo tar -C /usr/local -xzf /tmp/singularity-${VERSION}.tar.gz \
   && cd /usr/local/singularity \
@@ -76,39 +77,3 @@ DONE!
 
 ----
 
-NOT USED YET, probably **never will**
-
-## Singularity CRI
-
-* Kubernetes Container Runtime Interface for Singularity
-
-First, [install kubernetes]()!
-
-<https://github.com/sylabs/singularity-cri>
-
-```bash
-export VERSION=1.0.0-beta.7
-git clone https://github.com/sylabs/singularity-cri.git && \
-  cd singularity-cri && \
-  git checkout tags/v${VERSION} -b v${VERSION} && \
-  make && \
-  sudo make install
-
-
-# Install to /usr/local/bin
-
-# If need to uninstall
-# Use `sudo make uninstall`
-```
-
-Edit the config YAML file, example config can be found [here](https://github.com/sylabs/singularity-cri/blob/master/config/sycri.yaml)
-
-```bash
-sycri --config ~/my-config.yaml
-```
-
-DEBUG MODE (-v)
-
-```bash
-sycri -v 6
-```

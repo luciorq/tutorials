@@ -1,5 +1,8 @@
 ---
-
+permalink: /containers/install-custom-path.md
+title: Install R binaries to custom path
+author: Lucio Rezende Queiroz
+date: 2020-09-28
 ---
 
 # Install R on a custom path
