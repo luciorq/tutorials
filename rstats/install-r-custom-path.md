@@ -1,5 +1,5 @@
 ---
-permalink: /containers/install-custom-path.md
+permalink: /rstats/install-r-custom-path
 title: Install R binaries to custom path
 author: Lucio Rezende Queiroz
 date: 2020-09-28

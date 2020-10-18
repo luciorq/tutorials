@@ -1,4 +1,5 @@
 ---
+permalink: /rstats/install-rstudio-server
 ---
 
 # Download RStudio daily test build

@@ -60,6 +60,7 @@ BEAST can be download from official [development repo](https://github.com/beast-
 sudo su
 cd /usr/local/
 wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+# wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEAST.v1.10.4.zip
 ```
 
 ### Install
