@@ -37,11 +37,12 @@ sudo apt-get update \
 
 ```bash
 cd /usr/local
-# https://dl.google.com/go/go1.15.2.linux-amd64.tar.gz
-export VERSION=1.15.2 \
+# OLD - https://dl.google.com/go/go1.15.4.linux-amd64.tar.gz
+# NEW - https://golang.org/dl/go1.15.5.linux-amd64.tar.gz
+export VERSION=1.15.5 \
        OS=linux \
        ARCH=amd64 \
-  && wget -O /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz https://dl.google.com/go/go${VERSION}.${OS}-${ARCH}.tar.gz \
+  && wget -O /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz https://golang.org/dl/go${VERSION}.${OS}-${ARCH}.tar.gz \
    && sudo tar -C /usr/local -xzf /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz \
    && rm /tmp/go${VERSION}.${OS}-${ARCH}.tar.gz
 ```
@@ -57,7 +58,7 @@ go version
 ```bash
 # https://github.com/hpcng/singularity/releases/download/v3.6.3/singularity-3.6.3.tar.gz
 # adjust Version as necessary
-export VERSION=3.6.3 \
+export VERSION=3.7.0 \
   &&  wget -O /tmp/singularity-${VERSION}.tar.gz https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz \
   && sudo tar -C /usr/local -xzf /tmp/singularity-${VERSION}.tar.gz \
   && cd /usr/local/singularity \

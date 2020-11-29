@@ -2,7 +2,7 @@
 permalink: /rstats/install-r-custom-path
 title: Install R binaries to custom path
 author: Lucio Rezende Queiroz
-date: 2020-09-28
+date: 2020-10-27
 ---
 
 # Install R on a custom path
@@ -17,7 +17,7 @@ installing to /opt/R/
 
 
 ```bash
-export R_VERSION=4.0.2
+export R_VERSION=4.0.3
 
 curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.deb
 sudo gdebi r-${R_VERSION}_1_amd64.deb
