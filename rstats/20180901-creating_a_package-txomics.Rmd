@@ -1,7 +1,8 @@
 ---
 title: "txomics: Developing a package in the open"
 author: "Lucio Rezende Queiroz"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "2018-09-01"
+modified: "2018-09-01"
 output: github_document
 ---
 
@@ -17,7 +18,7 @@ knitr::opts_knit$set(root.dir = "~/projects/txomics/")
 * Install devtools and usethis packages using:
 `install.packages("devtools")`, `install.packages("usethis")` and `install.packages("pkgbuild")`
 * Check if your R installation have the capabilities related to building packages from source using: `pkgbuild::check_build_tools()`
-* Create package folder: 
+* Create package folder:
 `usethis::create_package("txomics")`
 
 # Edit devtools options for adding metadata to package
@@ -49,7 +50,7 @@ options(
   usethis.full_name = "Lucio Rezende Queiroz",
   usethis.description = list(
     `Authors@R` = 'person(
-                      "Lucio", "Rezende Queiroz", 
+                      "Lucio", "Rezende Queiroz",
                       email = "luciorqueiroz@gmail.com",
                       role = c("aut", "cre"),
                       comment = c(ORCID="0000-0002-6090-1834")
@@ -63,7 +64,7 @@ getOption("usethis.description")
 
 # Tips for choosing the name of your package
 
-use `available::available("package_name")` to check if it is available and 
+use `available::available("package_name")` to check if it is available and
 if the name has any misleading interpretation
 
 # Change project build information
@@ -134,7 +135,7 @@ example:
 
 ```{}
 #' Add together two numbers.
-#' 
+#'
 #' @param x A number.
 #' @param y A number.
 #' @return The sum of \code{x} and \code{y}.
@@ -146,7 +147,7 @@ add <- function(x, y) {
 }
 ```
 
-* In RStudio use the Code > Insert Roxygen Skeleton with the cursor over a 
+* In RStudio use the Code > Insert Roxygen Skeleton with the cursor over a
 function to add the basics
 
 use `devtools::document()` to automatic generate the man folder and Rd files for each function
@@ -189,7 +190,7 @@ usethis::use_mit_license(name = "Lucio Rezende Queiroz")
 ## Use a Code of Conduct
 
 The devtools and usethis packages provide a templeta for a code of conduct,
-it is good practice to follow a code of conduct to provide a harassment free 
+it is good practice to follow a code of conduct to provide a harassment free
 enviroment for the development of open source tools.
 
 ```{r, eval=FALSE}
@@ -271,7 +272,7 @@ Example content
 # Prepare for CRAN submission
 
 It will create `cran-comments.md` file,
-you should then add it to `.Rbuildignore`, 
+you should then add it to `.Rbuildignore`,
 so it will not be included in the package.
 
 ```{r, eval=FALSE}
@@ -364,7 +365,7 @@ you will need Appveyor
 usethis::use_appveyor()
 ```
 
-Go to <https://ci.appveyor.com/projects/new>, link your github account and turn 
+Go to <https://ci.appveyor.com/projects/new>, link your github account and turn
 the repo on.
 Then commit and push to your repo to automatically build and test.
 
@@ -418,7 +419,7 @@ usethis::use_test(name = "function_name")
 Directories will be created at `test/testthat` and a test script will be created
 at `tests/testthat.R`
 
-Create some unit tests and save in a script file at `tests/testthat/`. 
+Create some unit tests and save in a script file at `tests/testthat/`.
 Then go to Build -> Test Package or `devtools::test()`
 
 
@@ -434,7 +435,7 @@ _e.g._ Add image to `man/figures/logo.svg`
 And add it to the readme file with a markdown tag
 `![LOGO](man/figures/logo.svg)`
 
-or you can use HTML tags 
+or you can use HTML tags
 `<img src="man/figures/logo.svg" align="right" height=140/>`
 
 # Adding badges to github repo
@@ -460,9 +461,9 @@ usethis::use_cran_badge()
 
 # Create a webpage with documentation
 
-Using `pkgdown` 
+Using `pkgdown`
 
-Run: 
+Run:
 ```{r, eval=FALSE}
 usethis::use_pkgdown()
 pkgdown::build_site()
@@ -472,7 +473,7 @@ pkgdown::build_site()
  * Check GitHub pages section if source is set to “master branch /docs folder”.
 
 
-### Updating page 
+### Updating page
 
 * use `pkgdown::clean_site()` to clean older builds
 * use `pkgdown::build_site()` to rebuild the website
@@ -510,7 +511,7 @@ Once your package has been accepted by CRAN, you have a couple of technical task
 * Go to social media ...
 * Talk at conferences
 * Expose yourself, take critics and improve!
-* If you are a scientist, publish an article about it 
+* If you are a scientist, publish an article about it
 * or even better use the package to conclude something great!
 
 
